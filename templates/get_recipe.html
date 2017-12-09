@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+        {% if session.logged_in %}
+		<title>Hi, {{session.user_name}} | {{data['Name']}}</title>
+		{% else %}
+		<title>Hi, {{name}}</title>
+		{% endif %}
+            <link href="{{url_for('static', filename = 'css/bootstrap.min.css')}}" rel="stylesheet">
+            <link rel = "shortcut icon" href="{{url_for('static', filename='Favicon.ico')}}">
+
+            <!-- Custom fonts for this template
+            <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+            <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
+            -->
+            <!-- Custom styles for this template -->
+            <link href="{{url_for('static', filename = 'css/bootstrap.css')}}" rel="stylesheet">
+<!--            <link href="css/easycook.css" rel="stylesheet">i   -->
+            <link href="{{url_for('static', filename = 'css/loglog.css')}}" rel="stylesheet">
+        </head>
+	
+{%extends "header.html"%}
+{%block body%}
+<div class="container">
+	<table class="table table-striped">
+	{%for key, value in data.iteritems()%}
+	{%if key == "Name"%}
+		<div class="d-flex align-items-center">
+			<div class="p-2"><h2>{{value}}</h2></div>
+			{%if session.user_name%}
+				{%if fav%}
+					<div class="ml-auto p-2"><a href="{{url_for('favorite', rid = data['ID'])}}" class="btn btn-danger" role="button" data-toggle="tooltip" title="Click to undo favorite">Unfavorite</a></div>
+				{%else%}
+					<div class="ml-auto p-2"><a href="{{url_for('favorite', rid = data['ID'])}}" class="btn btn-success" role="button" data-toggle="tooltip" title="Click to favorite">Favorite</a></div>
+				{%endif%}
+			{%endif%}
+		</div>
+	{%else%}
+	<tr>
+		<th><font color = "black">{{key}}</font></th>
+		<td>
+			{%if key == "Ingredient" or key == "Directions"%}
+				<p>{%for token in value%}</p>
+				<font color = "grey">{{token}}</font>
+				{%endfor%}
+			{%elif key == "Categories"%}
+				<p>{%for token in value%}
+				<a href="{{url_for('search_recipe_bykw', kw = token)}}">{{token}}</a>; 
+				{%endfor%}</p>
+			{%else%}
+				{%if value%}
+					<font color = "grey">{{value}}</font>
+				{%else%}
+					<font color = "grey">/</font>
+				{%endif%}
+			{%endif%}
+		</td>
+	</tr>
+	{%endif%}
+	{%endfor%}
+	</table>
+</div>
+
+{% if session.user_name%}
+<div class="container">
+	<div class="card text-center">
+	  <div class="card-header">
+	    <ul class="nav nav-tabs card-header-tabs">
+	      <li class="nav-item">
+	        <a class="nav-link active">Comment</a>
+	      </li>
+	    </ul>
+	  </div>
+	  <div class="card-body" style="text-align:left;">
+	    <h4 class="card-title">{{session.user_name}} (^o^)/ Tell others something!</h4>
+
+	    <form methods = "POST" action = "{{url_for('add_comment')}}">
+			<div class="form-group" style="max-width:100%;margin-left:auto;margin-right:auto">
+				<input type="hidden" name="rid" value="{{data['ID']}}">
+				<textarea class="form-control" id="usercomment" rows="3" name="usercomment"></textarea>
+		  	</div>
+			<button type="submit" class="btn btn-primary" style="width:15%">Add Comment</button>
+		</form>
+	  </div>
+	</div>
+</div>
+{% else %}
+<div class="container">
+	<div class="card text-center">
+	  <div class="card-header">
+	    <ul class="nav nav-tabs card-header-tabs">
+	      <h5><a class="text" onclick="document.getElementById('id02').style.display='block'; document.getElementById('id01').style.display='none';" id="login"  href="#">Log In</a> to tell others something~</h5>
+	    </ul>
+	  </div>
+	</div>
+</div>
+{% endif %}
+
+
+<div class="container">
+<h2>User Comments</h2>
+{% for i in cdata: %}
+		<div class="card bg-light mb-3" style="max-width:100%;">	
+		<!--Some logic like, if this comment belongs to current user, display buttons below, otherwise skip those buttons-->
+
+		<!--For loop, for display all comments-->
+		  <div class="card-header">{{i.uName}}
+			<!--If condition, whether Userid =session.uid, if true, display edit and del, else skip those buttons -->
+			{% if session.user_id == i.uID %}
+			  <a data-toggle="collapse" data-target="#{{i.cID}}" style="position: absolute; right: 5rem" href="#" >Edit</a>
+			  <a href="{{url_for('delete_comment', cid = i.cID)}}" style="position: absolute; right: 1rem">Delete</a>
+<!-- Trig deletecom fn in ecapp -->
+			{% endif %}
+		  </div>
+		{% if session.user_id == i.uID %}
+		  <div class="collapse multi-collapse" id="{{i.cID}}">
+			  <div class="card card-body">
+			  	<form methods="POST" action="{{url_for('edit_comment', cid = i.cID)}}">
+					<div class="form-group" style="max-width:100%;margin-left:auto;margin-right:auto">
+				    	<textarea class="form-control" id="editusercom" rows="3" name="editusercom">{{i.Comment}}</textarea>
+				  	</div>
+				  	<button type="submit" class="btn btn-primary" style="width:8%;">Submit</button>	<!-- Trig edit comment fn in ecapp -->
+				</form>
+			  </div>
+		  </div>
+		{% endif %}
+	
+		  <div class="card-body">
+		    <p class="card-text">{{i.Comment}}</p>
+		  </div>
+		</div>
+{% endfor %}
+</div>
+
+</body>
+</html>
+{%endblock%}

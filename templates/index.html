@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>EasyCook</title>
+    	<link href="{{url_for('static', filename = 'css/bootstrap.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename = 'css/loglog.css')}}" rel="stylesheet">
+        <!-- For log in and sign up css -->
+        <script src={{url_for('static', filename='js/echarts.min.js')}}></script>
+	</head>
+{% extends "header.html" %}
+{% block body %}
+
+
+
+<body>
+
+<!-- Header -->
+
+<header class="masthead">
+      <div class="overlay">
+      
+	<!-- Welcome Message -->
+          <h2 class="text-muted text-lg">Welcome To</h2>
+          <h1 class="display-1 text-white">EasyCook</h1>
+
+          <div class="d-flex justify-content-center align-items-center">
+           <div class="row"> 
+			    <div class="container row d-flex justify-content-center">
+			            <div class="p-1"><form action = "/search/" methods="POST">
+			              <input class="form-control mr-sm-5" id = "keyword" type = "text" name = "keyword" placeholder="Keyword: apple banana ..."/>
+			            </div>
+			    </div>
+			    <div class="container d-flex justify-content-center align-items-center">
+				    <p style="font-size:20px;color:white;">&emsp;Search by: </p>
+				    <div class="form-group p-1">
+				      <select class="form-control" id="searchkey" name="searchkey">
+				        <option>Name</option>
+				        <option>Ingredient</option>
+				      </select>
+			  	    </div>
+
+				    <p style="font-size:20px;color:white;">&emsp;Sort by: </p>
+				    <div class="form-group p-1">
+				      <select class="form-control" id="sortkey" name="sortkey">
+				        <option>Name</option>
+				        <option>Rating</option>
+				      </select>
+			  	    </div>
+			  	    &emsp;
+				    <!--label style="font-size:18px;color:white;" class="radio-inline text-white p-1" id="morekey" name="morekey"><input type="radio" name="optradio">Low Calories</label-->
+				</div>
+		            <div class="container d-flex align-items-center col-2"><button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button></div>
+	   </div>	
+          </div>
+
+      </div>
+</header>
+
+
+<!-- end of header -->
+<!--
+    <div class="container">
+      
+
+       <div class = "container">
+        <form action = "/getarecipe" method = "post">
+          <label for = "name">Plese enter your name:</label>
+          <input id = "name" type = "text" name = "name" placeholder="Name" />
+          <label for = "RecipeID">Please enter a recipe id (eg. 1):</label>
+          <input id = "RecipeID" type = "text" name = "RecipeID" placeholder="Recipe id"/>
+          <input type = "submit"/>
+        </form>
+      </div>
+-->
+<!-- content -->
+<!--
+      <div class="bg-faded p-4 my-4">
+        <hr class="divider">
+        <h2 class="text-center text-lg text-uppercase my-0">Build a website
+          <strong>worth visitng</strong>
+        </h2>
+        <hr class="divider">
+        <img class="img-fluid float-left mr-4 d-none d-lg-block" src="{{ url_for('static', filename='images/Logo.png')}}" alt="">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam soluta dolore voluptatem, deleniti dignissimos excepturi veritatis cum hic sunt perferendis ipsum perspiciatis nam officiis sequi atque enim ut! Velit, consectetur.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam pariatur perspiciatis reprehenderit illo et vitae iste provident debitis quos corporis saepe deserunt ad, officia, minima natus molestias assumenda nisi velit?</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit totam libero expedita magni est delectus pariatur aut, aperiam eveniet velit cum possimus, autem voluptas. Eum qui ut quasi voluptate blanditiis?</p>
+      </div>
+
+      <div class="bg-dark p-4 my-4">
+        <hr class="divider">
+        <h2 class="text-center text-lg text-uppercase my-0">Beautiful boxes to
+          <strong>showcase your content</strong>
+        </h2>
+        <hr class="divider">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam soluta dolore voluptatem, deleniti dignissimos excepturi veritatis cum hic sunt perferendis ipsum perspiciatis nam officiis sequi atque enim ut! Velit, consectetur.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam pariatur perspiciatis reprehenderit illo et vitae iste provident debitis quos corporis saepe deserunt ad, officia, minima natus molestias assumenda nisi velit?</p>
+      </div>
+-->
+<!-- end of content -->
+
+<!-- Team -->
+<!--
+    <section class="bg-light" id="team">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading text-uppercase">Our Amazing Team</h2>
+            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="team-member">
+              <img class="mx-auto rounded-circle" src="{{ url_for('static', filename='images/pizza.jpg')}}" alt="" width="150" height="150">
+              <h4>Chen Zhenfeng</h4>
+              <p class="text-muted">Front-end Designer</p>
+              <ul class="list-inline social-buttons">
+                <li class="list-inline-item">
+                  <a href="#">
+                    <i class="fa fa-twitter"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="#">
+                    <i class="fa fa-facebook"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="#">
+                    <i class="fa fa-linkedin"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="team-member">
+              <img class="mx-auto rounded-circle" src="img/team/2.jpg" alt="">
+              <h4>Larry Parker</h4>
+              <p class="text-muted">Lead Marketer</p>
+              <ul class="list-inline social-buttons">
+                <li class="list-inline-item">
+                  <a href="#">
+                    <i class="fa fa-twitter"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="#">
+                    <i class="fa fa-facebook"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="#">
+                    <i class="fa fa-linkedin"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+	  <div class="col-sm-3">
+            <div class="team-member">
+              <img class="mx-auto rounded-circle" src="img/team/2.jpg" alt="">
+              <h4>Larry Parker</h4>
+              <p class="text-muted">Lead Marketer</p>
+              <ul class="list-inline social-buttons">
+                <li class="list-inline-item">
+                  <a href="#">
+                    <i class="fa fa-twitter"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="#">
+                    <i class="fa fa-facebook"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="#">
+                    <i class="fa fa-linkedin"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="team-member">
+              <img class="mx-auto rounded-circle" src="img/team/3.jpg" alt="">
+              <h4>Diana Pertersen</h4>
+              <p class="text-muted">Lead Developer</p>
+              <ul class="list-inline social-buttons">
+                <li class="list-inline-item">
+                  <a href="#">
+                    <i class="fa fa-twitter"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="#">
+                    <i class="fa fa-facebook"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="#">
+                    <i class="fa fa-linkedin"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  -->
+<!-- end of the team -->
+
+ 
+</body>
+{% endblock %}
+</html>

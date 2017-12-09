@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<title>Search Result | Easycook</title>
+{%extends "header.html"%}
+{%block body%}
+<body>
+<br>
+<br>
+<br>
+<br>
+
+	<div class = "container">
+		
+
+		<div class="d-flex justify-content-center">
+			<div class="container row d-flex justify-content-between align-items-baseline">
+							
+		        <div class="row">
+		        
+			            <div class="p-1">
+			            	<form action = "/search/" methods="POST">
+			            <input class="form-control mr-sm-5" id = "keyword" type = "text" name = "keyword" placeholder="Space for separating keywords"/>
+			            </div>
+				
+						<div class="p-2"><p>&emsp;Search by: </p></div>
+		    			<div class="form-group p-1">
+			      			<select class="form-control" id="searchkey" name="searchkey">
+			        		<option>Name</option>
+			        		<option>Ingredient</option>
+			      			</select>
+	  	    			</div>
+
+		    			<div class="p-2"><p>&emsp;Sort body: </p></div>
+		    			<div class="form-group p-1">
+			      			<select class="form-control" id="sortkey" name="sortkey">
+			        		<option>Name</option>
+			        		<option>Rating</option>
+			      			</select>
+	  	    			</div>
+					
+			        <div class="p-1"><button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button></div>
+			    </div>
+	
+			</div>
+		</div>
+
+
+		<div class="alert alert-info" role="alert">
+  		<b><i>{{data | length}}</b></i> recipe results found.&emsp;&emsp;
+  		<b>Keyword:</b>
+  		{%for i in keylist%}
+  		'{{i}}'
+  		{%endfor%}
+		<b>&emsp;&emsp; Sort by:</b>
+  		{{sortkey}}
+		</div>
+
+		{%if key == 'Ingredient'%}
+			<table class="table table-striped">
+			<thead>
+			<tr>
+	      		<th scope="col">Recipe Name</th>
+	      		<th scope="col">Ingredient</th>
+	      		<th scope="col">Rating</th>
+			</tr>
+			</thead>
+
+			<tbody>
+			<p>{%for i in data%}</p>
+			<tr>
+				<td><a href="{{url_for('jump_recipe',number = i['RecipeID'])}}">{{i['RecipeName']}}</a></td>
+				<td>{%for i in keylist%}
+			  		{{i}}
+			  		{%endfor%}
+			  	</td>
+				<td>{{i['Rating']}}</td>
+			</tr>
+			<p>{%endfor%}</p>
+			</tbody>
+			</table>
+
+		{%else%}
+			<table class="table table-striped">
+			<thead>
+			<tr>
+	      		<th scope="col">Recipe Name</th>
+	      		<th scope="col">Rating</th>
+			</tr>
+			</thead>
+
+			<tbody>
+			<p>{%for i in data%}</p>
+			<tr>
+				<td><a href="{{url_for('jump_recipe',number = i['RecipeID'])}}">{{i['RecipeName']}}</a></td>
+				<td>{{i['Rating']}}</td>
+			</tr>
+			<p>{%endfor%}</p>
+			</tbody>
+			</table>
+		{%endif%}
+	</div>
+
+</body>
+</html>
+{%endblock%}

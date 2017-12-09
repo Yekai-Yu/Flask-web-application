@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>EasyCook</title>
+    	 	<link href="{{url_for('static', filename = 'css/bootstrap.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename = 'css/loglog.css')}}" rel="stylesheet"><!-- For log in and sign up css -->
+	</head>
+{% extends "header.html" %}
+{% block body %}
+
+<body>
+	<div class="container">
+		<form action="/newrecipe" methods="POST">
+		  
+		  <div class="form-group">
+		    <label for="Name">Name</label>
+		    <input type="text" class="form-control" id="name" name="name" placeholder="What is your recipe name">
+		  </div>
+
+		  <div class="form-group">
+		    <label for="Description">Description</label>
+		    <input type="text" class="form-control" id="description" name="description" placeholder="Describe your recipe">
+		  </div>
+  		  
+  		  <div class="form-group">
+		    <label for="Calories">Calories</label>
+		    <input type="number" class="form-control" id="calories" name="calories" placeholder="Calories">
+		  </div>
+
+		  <div class="form-group">
+		    <label for="Fat">Fat</label>
+		    <input type="number" class="form-control" id="fat" name="fat" placeholder="Fat content">
+		  </div>  
+
+		  <div class="form-group">
+		    <label for="Protein">Protein</label>
+		    <input type="number" class="form-control" id="protein" name="protein" placeholder="Protein content">
+		  </div>
+
+		  <div class="form-group">
+		    <label for="Sodium">Sodium</label>
+		    <input type="number" class="form-control" id="sodium" name="sodium" placeholder="Sodium content">
+		  </div>  
+
+		  <div class="form-group">
+		    <label for="Ingredients">Ingredients (Separate by ;)</label>
+		    <input type="text" class="form-control" id="ingredients" name="ingredients" placeholder="What does it contain">
+		  </div>
+
+		  <div class="form-group">
+		    <label for="Categories">Categories (Separate by ;)</label>
+		    <input type="text" class="form-control" id="categories" name="categories" placeholder="What kind of food is it">
+		  </div>  
+
+		  <div class="form-group">
+		    <label for="Directions">Directions (Separate by ;)</label>
+		    <input type="text" class="form-control" id="directions" name="directions" placeholder="How did you do it">
+		  </div>
+		
+		  <div class="form-group">
+		    <label for="Rating">Rating</label>
+		    <input type="number" class="form-control" id="rating" name="rating" placeholder="how much do you rate it (0-5.0)">
+		  </div>		
+
+		  <button class="btn btn-primary my-2 my-sm-0" type="submit">Add a new one</button>
+
+		</form>
+	</div>
+</body>
+
+
+{% endblock %}
+</html>

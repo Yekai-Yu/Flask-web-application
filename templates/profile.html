@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <title>EasyCook</title>
+      <link href="{{url_for('static', filename = 'css/bootstrap.css')}}" rel="stylesheet">
+      <link href="{{url_for('static', filename = 'css/loglog.css')}}" rel="stylesheet">
+      <!-- For log in and sign up css -->
+      <script src={{url_for('static', filename='js/echarts.min.js')}}></script>
+   </head>
+   {% extends "header.html" %}
+   {% block body %}
+   <body>
+      <div class="container">
+         <div class="row">
+            <div class="col-3">
+               <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                  <div class="container">
+                     <img class="img-thumbnail rounded-circle" src="{{ url_for('static', filename='images/default-user-image.png')}}" alt="">
+                  </div>
+                  <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="/" role="tab" >Home</a>
+                  <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</a>
+               </div>
+            </div>
+            <div class="col">
+               <div class="row align-items-center">
+                  <div><h1 class="display-4">Dashboard</h1></div>
+                  <div><button class="btn btn-outline-primary btn-sm" type="button" disabled>{{session['user_name']}}</button></div>
+               </div>
+               <div class="row">
+                  <div class="col">
+                     <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                           Favorite Recipes
+                           <span class="badge badge-primary badge-pill">{{all_fav | length}}</span>
+                        </div>
+                        <ul class="list-group">
+                           {%for i in all_fav%}
+                           <li class="list-group-item"><a href="{{url_for('jump_recipe', number = i[0])}}">{{i[1]}}</a><a style="position: absolute; right: 1rem" href="{{url_for('favorite', rid = i[0])}}"><span aria-hidden = "true" class="data-toggle="tooltip" title="Click to undo favorite"">&times;</span></a></li>
+                           {%endfor%}
+                        </ul>
+                     </div>
+                     <br>
+                     <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                           Your Recipes
+                           <span class="badge badge-primary badge-pill">{{all_recipe | length}}</span>
+                        </div>
+                        <ul class="list-group">
+                           {%for i in all_recipe%}
+                           <li class="list-group-item"><a href="{{url_for('jump_recipe', number = i[0])}}">{{i[1]}}</a><a style="position: absolute; right: 5rem" href="{{url_for('edit_recipe',rid = i[0])}}">Edit</a><a style="position: absolute; right: 1rem" href="{{url_for('delete_recipe', rid = i[0])}}">Delete</a></li>
+                           {%endfor%}
+                        </ul>
+                     </div>
+                     <br>
+		                  <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center" data-toggle="tooltip" data-placement="bottom" title="Based on your favorite">
+                           Recommendations
+                           <span class="badge badge-primary badge-pill">{{recommend | length}}</span>
+                        </div>
+                           <ul class="list-group">
+                             {%for i in recommend%}
+                             <li class="list-group-item"><a href="{{url_for('jump_recipe', number = i[0])}}">{{i[1]}}</a><a style="position: absolute; right: 1rem" href="{{url_for('favorite',rid = i[0])}}">Add to favorite</a></li>
+                             {%endfor%}
+                          </ul>
+                     </div>
+		      <br>
+                     <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                           Nutrition Summary
+                           <div class="container">
+                              <div id="cal_chart" style="width:600px;height:400px;"></div>
+                              <script type="text/javascript">
+                                 var myChart = echarts.init(document.getElementById('cal_chart'));
+
+                                var seriesLabel = {
+                                    normal: {
+                                        show: true,
+                                        textBorderColor: '#333',
+                                        textBorderWidth: 2
+                                    }
+                                }
+
+                                option = {
+                                    title: {
+                                        text: ''
+                                    },
+                                    tooltip: {
+                                        trigger: 'axis',
+                                        axisPointer: {
+                                            type: 'shadow'
+                                        }
+                                    },
+                                    legend: {
+                                        data: ['Calories', 'Fat', 'Protein', 'Sodium']
+                                    },
+                                    grid: {
+                                        left: 100
+                                    },
+                                    toolbox: {
+                                        show: true,
+                                        feature: {
+                                            saveAsImage: {}
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'value',
+                                        name: '',
+                                        axisLabel: {
+                                            formatter: '{value}'
+                                        }
+                                    },
+                                    yAxis: {
+                                        type: 'category',
+                                        inverse: true,
+                                        data: ['My Favorite', 'Average'],
+                                    },
+                                    series: [
+                                        {
+                                            name: 'Calories',
+                                            type: 'bar',
+                                            label: seriesLabel,
+                                            data: [{{nutrition['Calories']}}, {{avg_nutrition['Calories']}}]
+                                        },
+                                        {
+                                            name: 'Fat',
+                                            type: 'bar',
+                                            label: seriesLabel,
+                                            data: [{{nutrition['Fat']}}, {{avg_nutrition['Fat']}}]
+                                        },
+                                        {
+                                            name: 'Protein',
+                                            type: 'bar',
+                                            label: seriesLabel,
+                                            data: [{{nutrition['Protein']}}, {{avg_nutrition['Protein']}}]
+                                        },
+                                        {
+                                            name: 'Sodium',
+                                            type: 'bar',
+                                            label: seriesLabel,
+                                            data: [{{nutrition['Sodium']}}, {{avg_nutrition['Sodium']}}]
+                                        }
+                                    ]
+                                };
+
+                                myChart.setOption(option);
+                              </script>
+                           </div>
+                        </div>
+                     </div>
+                     <br>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </body>
+   {% endblock %}
+</html>
+
+
